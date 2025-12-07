@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shubham's notebook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      /* grid notebook background */
+      .notebook-grid {
+        background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
+          linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+        background-size: 26px 26px;
+        background-color: #fefdfb;
+      }
+      body.dark-mode.notebook-grid {
+        background-image: linear-gradient(#111827 1px, transparent 1px),
+          linear-gradient(90deg, #111827 1px, transparent 1px);
+        background-size: 26px 26px;
+        background-color: #020617;
+        color: #e5e7eb;
+      }
+
+      .handwriting {
+        font-family: "Architects Daughter", cursive;
+        text-shadow: 0.25px 0.25px 0 rgba(15, 23, 42, 0.4);
+      }
+      body.dark-mode .handwriting {
+        text-shadow: 0.4px 0.4px 0 rgba(0, 0, 0, 0.9);
+      }
+
+      .page-shell {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 1rem;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        box-shadow: 0 22px 40px rgba(15, 23, 42, 0.18);
+        backdrop-filter: blur(8px);
+      }
+      body.dark-mode .page-shell {
+        background: radial-gradient(circle at top left, #1f2937, #020617);
+        border-color: rgba(148, 163, 184, 0.8);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+      }
+
+      .page-hole-strip {
+        border-right: 2px dashed rgba(148, 163, 184, 0.7);
+        background: linear-gradient(#f9fafb, #e5e7eb);
+      }
+      body.dark-mode .page-hole-strip {
+        background: linear-gradient(#020617, #111827);
+      }
+
+      .page-hole {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.25);
+      }
+      body.dark-mode .page-hole {
+        background: #020617;
+      }
+
+      .ink-line {
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.7);
+      }
+
+      .task-line {
+        border-bottom: 1px dotted rgba(148, 163, 184, 0.5);
+      }
+      body.dark-mode .task-line {
+        border-bottom-color: rgba(148, 163, 184, 0.7);
+      }
+
+      .mono-tag {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+
+      /* Highlighter style headings */
+      .highlight-heading {
+        position: relative;
+        display: inline-block;
+        padding: 0 0.2rem;
+      }
+      .highlight-heading::before {
+        content: "";
+        position: absolute;
+        inset: 45% -0.2rem 0;
+        background: linear-gradient(90deg, #fde68a, #fbbf24, #fed7aa);
+        opacity: 0.85;
+        transform: skewX(-4deg);
+        z-index: -1;
+        border-radius: 0.25rem;
+      }
+      body.dark-mode .highlight-heading::before {
+        content: "";
+        position: absolute;
+        inset: 45% -0.2rem 0;
+        background: linear-gradient(90deg, #fde68a, #fbbf24, #fed7aa);
+        opacity: 0.85;
+        transform: skewX(-4deg);
+        z-index: -1;
+        border-radius: 0.25rem;
+      }
+
+      .pinned-project {
+        position: relative;
+        border-radius: 0.75rem;
+        padding: 0.75rem 0.85rem;
+        margin-bottom: 0.4rem;
+        border: 1px solid rgba(249, 115, 22, 0.25);
+      }
+      body.dark-mode .pinned-project {
+        border-color: rgba(253, 186, 116, 0.6);
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.9);
+      }
+
+      .pinned-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .status-chip {
+        border-radius: 999px;
+        font-size: 0.65rem;
+        padding: 0.1rem 0.5rem;
+        font-weight: 500;
+      }
+
+      .status-todo {
+        background: rgba(248, 250, 252, 1);
+        color: #0f172a;
+        border: 1px solid rgba(148, 163, 184, 0.8);
+      }
+      .status-wip {
+        background: rgba(254, 249, 195, 1);
+        color: #92400e;
+        border: 1px solid rgba(245, 158, 11, 0.7);
+      }
+      .status-done {
+        background: rgba(220, 252, 231, 1);
+        color: #166534;
+        border: 1px solid rgba(34, 197, 94, 0.8);
+      }
+      body.dark-mode .status-todo {
+        background: rgba(15, 23, 42, 1);
+        color: #e5e7eb;
+        border-color: rgba(148, 163, 184, 0.8);
+      }
+      body.dark-mode .status-wip {
+        background: rgba(250, 204, 21, 0.22);
+        color: #facc15;
+        border-color: rgba(245, 158, 11, 0.7);
+      }
+      body.dark-mode .status-done {
+        background: rgba(22, 163, 74, 0.35);
+        color: #bbf7d0;
+        border-color: rgba(74, 222, 128, 0.9);
+      }
+
+      .subtask-text.done {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen p-4 md:p-8 notebook-grid">
+    <div class="max-w-5xl mx-auto">
+      <!-- top bar (always visible) -->
+      <header
+        class="mb-4 md:mb-6 flex flex-col md:flex-row md:items-center gap-3"
+      >
+        <div class="flex items-center gap-2">
+          <div class="flex flex-col items-center mr-1">
+            <div
+              class="w-8 h-8 rounded-full border-2 border-slate-700 bg-amber-200 flex items-center justify-center handwriting text-xl"
+            >
+              ✏️
+            </div>
+          </div>
+          <div>
+            <h1
+              class="text-2xl md:text-3xl handwriting leading-tight highlight-heading"
+            >
+              Shubham's notebook
+            </h1>
+            <p class="text-[11px] text-slate-500 md:text-xs">
+              projects as pages • tasks as scribbles • SPA notebook
+            </p>
+          </div>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex flex-wrap items-center gap-2 text-xs md:text-[11px]">
+          <div
+            class="px-3 py-1.5 rounded-full bg-white/70 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 flex items-center gap-2"
+          >
+            <span class="mono-tag text-[10px] uppercase tracking-wide"
+              >page</span
+            >
+            <span id="currentPageLabel" class="handwriting text-sm">index</span>
+          </div>
+          <div
+            class="px-3 py-1.5 rounded-full bg-white/70 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 flex items-center gap-2"
+          >
+            <span class="mono-tag text-[10px] uppercase tracking-wide"
+              >last updated</span
+            >
+            <span
+              id="lastUpdatedLabel"
+              class="text-[10px] md:text-[11px] text-slate-600 dark:text-slate-300"
+              >–</span
+            >
+          </div>
+          <button
+            type="button"
+            onclick="toggleDarkMode()"
+            class="px-2.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-600 bg-slate-900 text-slate-50 shadow-sm flex items-center gap-1"
+          >
+            <span id="darkToggleIcon">🌙</span>
+          </button>
+          <!-- keep JSON tools as in your current file -->
+          <button
+            type="button"
+            onclick="exportDB()"
+            class="px-2.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-900/80 shadow-sm flex items-center gap-1"
+          >
+            ⬇️ json
+          </button>
+          <label
+            class="px-2.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-900/80 shadow-sm flex items-center gap-1 cursor-pointer"
+          >
+            ⬆️
+            <input
+              type="file"
+              accept="application/json"
+              class="hidden"
+              onchange="importDB(event)"
+            />
+          </label>
+        </div>
+      </header>
+
+      <main class="page-shell overflow-hidden">
+        <div class="flex">
+          <!-- left strip with holes -->
+          <div
+            class="hidden sm:flex flex-col items-center justify-between py-6 px-3 page-hole-strip"
+          >
+            <div class="space-y-4">
+              <div class="page-hole"></div>
+              <div class="page-hole"></div>
+              <div class="page-hole"></div>
+            </div>
+            <div class="space-y-4">
+              <div class="page-hole"></div>
+              <div class="page-hole"></div>
+              <div class="page-hole"></div>
+            </div>
+          </div>
+
+          <!-- actual page -->
+          <div class="flex-1 p-4 md:p-6" id="pageRoot">
+            <!-- content injected by JS -->
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const DB_KEY = "notebook_todo_db_v3";
+      const DARK_KEY = "notebook_todo_dark";
+
+      let db = { projects: [] };
+      let currentView = "index"; // 'index' | 'project'
+      let currentProjectId = null;
+
+      async function loadDB() {
+        try {
+          const response = await fetch("/api/projects");
+          if (!response.ok) throw new Error("Failed to fetch projects");
+          const projects = await response.json();
+
+          const loadedDb = { projects };
+
+          // migration logic if needed
+          loadedDb.projects.forEach((p) => {
+            if (!p.createdAt) p.createdAt = Date.now();
+            if (!p.updatedAt) p.updatedAt = p.createdAt;
+            if (typeof p.pinned !== "boolean") p.pinned = false;
+            if (!Array.isArray(p.tasks)) p.tasks = [];
+            p.tasks.forEach((t) => {
+              if (!t.headline && t.text) t.headline = t.text;
+              if (!t.details) t.details = "";
+              // status migration
+              if (!t.status) {
+                if (t.done === true || t.status === "done") t.status = "done";
+                else t.status = "todo";
+              }
+              if (typeof t.done !== "boolean") {
+                t.done = t.status === "done";
+              }
+              if (!t.createdAt) t.createdAt = Date.now();
+              if (!t.deadline) t.deadline = "";
+              if (!t.updatedAt) t.updatedAt = t.createdAt;
+              if (!Array.isArray(t.subtasks)) t.subtasks = [];
+              t.subtasks.forEach((s) => {
+                if (!s.text) s.text = "";
+                if (typeof s.done !== "boolean") s.done = false;
+                if (!s.createdAt) s.createdAt = Date.now();
+              });
+            });
+          });
+
+          return loadedDb;
+        } catch (e) {
+          console.warn("Could not load DB, starting fresh", e);
+          return { projects: [] };
+        }
+      }
+
+      function saveDB() {
+        localStorage.setItem(DB_KEY, JSON.stringify(db));
+        renderApp();
+      }
+
+      function nowTs() {
+        return Date.now();
+      }
+
+      function formatDate(ts) {
+        if (!ts) return "–";
+        try {
+          const d = new Date(ts);
+          return d.toLocaleString();
+        } catch (e) {
+          return "–";
+        }
+      }
+
+      function computeGlobalLastUpdated() {
+        let maxTs = 0;
+        db.projects.forEach((p) => {
+          if (p.updatedAt && p.updatedAt > maxTs) maxTs = p.updatedAt;
+          (p.tasks || []).forEach((t) => {
+            if (t.updatedAt && t.updatedAt > maxTs) maxTs = t.updatedAt;
+            (t.subtasks || []).forEach((s) => {
+              if (s.createdAt && s.createdAt > maxTs) maxTs = s.createdAt;
+            });
+          });
+        });
+        return maxTs || null;
+      }
+
+      function escapeHtml(str = "") {
+        return String(str).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[c] || c)
+        );
+      }
+
+      // navigation
+      function goToIndex() {
+        currentView = "index";
+        currentProjectId = null;
+        renderApp();
+      }
+
+      function openProject(projectId) {
+        currentView = "project";
+        currentProjectId = projectId;
+        renderApp();
+      }
+
+      // project ops
+      async function addProject(ev) {
+        if (ev) ev.preventDefault();
+        const nameInput = document.getElementById("newProjectName");
+        if (!nameInput) return;
+        const name = nameInput.value.trim();
+        if (!name) return;
+        try {
+          const response = await fetch("/api/projects", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name }),
+          });
+          if (!response.ok) throw new Error("Failed to add project");
+          const project = await response.json();
+          db.projects.push(project);
+          nameInput.value = "";
+          renderApp();
+        } catch (e) {
+          console.error("Error adding project:", e);
+        }
+      }
+
+      function findProject(projectId) {
+        return db.projects.find((p) => p.id === projectId);
+      }
+
+      async function togglePin(projectId) {
+        const p = findProject(projectId);
+        if (!p) return;
+        try {
+          const response = await fetch(`/api/projects/${projectId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pinned: !p.pinned }),
+          });
+          if (!response.ok) throw new Error("Failed to update project");
+          const updated = await response.json();
+          Object.assign(p, updated);
+          renderApp();
+        } catch (e) {
+          console.error("Error updating project:", e);
+        }
+      }
+
+      // task helpers
+      function cycleStatus(current) {
+        if (current === "todo") return "wip";
+        if (current === "wip") return "done";
+        return "todo";
+      }
+
+      async function addTaskFromForm(projectId, ev) {
+        if (ev) ev.preventDefault();
+        const headEl = document.getElementById(`taskHeadline-${projectId}`);
+        const detailEl = document.getElementById(`taskDetails-${projectId}`);
+        const deadlineEl = document.getElementById(`taskDeadline-${projectId}`);
+        if (!headEl || !detailEl || !deadlineEl) return;
+        const headline = headEl.value.trim();
+        const details = detailEl.value.trim();
+        const deadline = deadlineEl.value;
+        if (!headline) return;
+        try {
+          const response = await fetch(`/api/projects/${projectId}/tasks`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ headline, details, deadline }),
+          });
+          if (!response.ok) throw new Error("Failed to add task");
+          const task = await response.json();
+          const p = findProject(projectId);
+          if (p) p.tasks.push(task);
+          headEl.value = "";
+          detailEl.value = "";
+          deadlineEl.value = "";
+          renderApp();
+        } catch (e) {
+          console.error("Error adding task:", e);
+        }
+      }
+
+      async function toggleTaskStatus(projectId, taskId) {
+        const p = findProject(projectId);
+        if (!p) return;
+        const t = p.tasks.find((x) => x.id === taskId);
+        if (!t) return;
+        const newStatus = cycleStatus(t.status || "todo");
+        try {
+          const response = await fetch(
+            `/api/projects/${projectId}/tasks/${taskId}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ status: newStatus }),
+            }
+          );
+          if (!response.ok) throw new Error("Failed to update task");
+          const updated = await response.json();
+          Object.assign(t, updated);
+          renderApp();
+        } catch (e) {
+          console.error("Error updating task:", e);
+        }
+      }
+
+      async function deleteTask(projectId, taskId) {
+        try {
+          const response = await fetch(
+            `/api/projects/${projectId}/tasks/${taskId}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!response.ok) throw new Error("Failed to delete task");
+          const p = findProject(projectId);
+          if (p) p.tasks = p.tasks.filter((x) => x.id !== taskId);
+          renderApp();
+        } catch (e) {
+          console.error("Error deleting task:", e);
+        }
+      }
+
+      // subtasks
+      async function addSubtask(projectId, taskId, ev) {
+        if (ev) ev.preventDefault();
+        const inputId = `subtaskInput-${projectId}-${taskId}`;
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+        try {
+          const response = await fetch(
+            `/api/projects/${projectId}/tasks/${taskId}/subtasks`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text }),
+            }
+          );
+          if (!response.ok) throw new Error("Failed to add subtask");
+          const subtask = await response.json();
+          const p = findProject(projectId);
+          if (p) {
+            const t = p.tasks.find((x) => x.id === taskId);
+            if (t) {
+              if (!t.subtasks) t.subtasks = [];
+              t.subtasks.push(subtask);
+            }
+          }
+          input.value = "";
+          renderApp();
+        } catch (e) {
+          console.error("Error adding subtask:", e);
+        }
+      }
+
+      async function toggleSubtask(projectId, taskId, subId) {
+        const p = findProject(projectId);
+        if (!p) return;
+        const t = p.tasks.find((x) => x.id === taskId);
+        if (!t || !Array.isArray(t.subtasks)) return;
+        const s = t.subtasks.find((x) => x.id === subId);
+        if (!s) return;
+        try {
+          const response = await fetch(
+            `/api/projects/${projectId}/tasks/${taskId}/subtasks/${subId}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ done: !s.done }),
+            }
+          );
+          if (!response.ok) throw new Error("Failed to update subtask");
+          const updated = await response.json();
+          Object.assign(s, updated);
+          renderApp();
+        } catch (e) {
+          console.error("Error updating subtask:", e);
+        }
+      }
+
+      async function deleteSubtask(projectId, taskId, subId) {
+        try {
+          const response = await fetch(
+            `/api/projects/${projectId}/tasks/${taskId}/subtasks/${subId}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!response.ok) throw new Error("Failed to delete subtask");
+          const p = findProject(projectId);
+          if (p) {
+            const t = p.tasks.find((x) => x.id === taskId);
+            if (t && Array.isArray(t.subtasks)) {
+              t.subtasks = t.subtasks.filter((x) => x.id !== subId);
+            }
+          }
+          renderApp();
+        } catch (e) {
+          console.error("Error deleting subtask:", e);
+        }
+      }
+
+      // dark mode
+      function applyDarkMode(isDark) {
+        document.body.classList.toggle("dark-mode", isDark);
+        const icon = document.getElementById("darkToggleIcon");
+        if (icon) icon.textContent = isDark ? "☀️" : "🌙";
+      }
+
+      function loadDarkMode() {
+        const stored = localStorage.getItem(DARK_KEY);
+        const isDark = stored === "true";
+        applyDarkMode(isDark);
+      }
+
+      function toggleDarkMode() {
+        const isDark = !document.body.classList.contains("dark-mode");
+        applyDarkMode(isDark);
+        localStorage.setItem(DARK_KEY, String(isDark));
+      }
+
+      // export / import (unchanged)
+      async function exportDB() {
+        try {
+          const response = await fetch("/api/projects");
+          if (!response.ok) throw new Error("Failed to fetch projects");
+          const projects = await response.json();
+          const data = JSON.stringify({ projects }, null, 2);
+          const blob = new Blob([data], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "notebook-todo-db.json";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        } catch (e) {
+          console.error("Error exporting DB:", e);
+        }
+      }
+
+      async function importDB(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+            const imported = JSON.parse(e.target.result);
+            if (
+              !imported ||
+              typeof imported !== "object" ||
+              !Array.isArray(imported.projects)
+            ) {
+              alert(
+                'Invalid JSON: expected an object with a "projects" array.'
+              );
+              return;
+            }
+            const response = await fetch("/api/import", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ projects: imported.projects }),
+            });
+            if (!response.ok) throw new Error("Failed to import");
+            db.projects = imported.projects;
+            renderApp();
+          } catch (err) {
+            console.error(err);
+            alert("Could not parse JSON file or import.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      // rendering
+      function updateHeaderMeta() {
+        const pageLabel = document.getElementById("currentPageLabel");
+        const lastLabel = document.getElementById("lastUpdatedLabel");
+        if (!pageLabel || !lastLabel) return;
+
+        if (currentView === "index") {
+          pageLabel.textContent = "index";
+          const ts = computeGlobalLastUpdated();
+          lastLabel.textContent = ts ? formatDate(ts) : "never";
+        } else {
+          const p = findProject(currentProjectId);
+          pageLabel.textContent = p ? p.name : "project";
+          lastLabel.textContent =
+            p && p.updatedAt ? formatDate(p.updatedAt) : "never";
+        }
+      }
+
+      function renderIndexPage() {
+        const root = document.getElementById("pageRoot");
+        if (!root) return;
+        if (!db.projects.length) {
+          root.innerHTML = `
+          <section class="space-y-6">
+            <div class="ink-line pb-3 mb-3 flex items-center justify-between gap-2">
+              <h2 class="handwriting text-xl highlight-heading">Page 1 — Index of Projects</h2>
+              <span class="text-[11px] text-slate-500">empty notebook</span>
+            </div>
+            <form onsubmit="addProject(event)" class="space-y-2">
+              <label class="block text-[11px] uppercase tracking-wide text-slate-500 mono-tag">new project</label>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input id="newProjectName" type="text" placeholder="Write a project name here..." class="flex-1 px-3 py-2 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-sky-400" />
+                <button class="px-3 py-2 rounded bg-sky-600 text-white text-xs handwriting" type="submit">+ add</button>
+              </div>
+            </form>
+            <p class="text-xs text-slate-500 max-w-md">
+              This page is your index. Each project becomes a separate notebook page with its own tasks, headlines and notes.
+            </p>
+          </section>
+        `;
+          return;
+        }
+
+        const pinned = db.projects.filter((p) => p.pinned);
+        const unpinned = db.projects.filter((p) => !p.pinned);
+
+        function renderProjectSection(p, isPinned) {
+          const safeName = escapeHtml(p.name);
+          const tasks = p.tasks || [];
+          const snippetTasks = tasks.slice(0, 4);
+          const moreCount = tasks.length - snippetTasks.length;
+          const tasksHtml = snippetTasks
+            .map((t) => {
+              const isDone = t.status === "done";
+              const cls = isDone ? "line-through opacity-50" : "";
+              const tooltip = `Created: ${formatDate(t.createdAt)}${
+                t.deadline ? " | Deadline: " + t.deadline : ""
+              }`;
+              return `
+            <li class="task-line py-1 text-[13px] flex items-start gap-2" title="${escapeHtml(
+              tooltip
+            )}">
+              <span class="mt-1 text-[10px]">•</span>
+              <span class="${cls}">${escapeHtml(t.headline)}</span>
+            </li>
+          `;
+            })
+            .join("");
+
+          const wrapperClass = isPinned ? "pinned-project" : "";
+          const pinBadge = isPinned
+            ? `<span class="pinned-label text-amber-700 dark:text-amber-200 mono-tag flex items-center gap-1">📌 pinned</span>`
+            : "";
+
+          return `
+          <section class="mb-4 pb-4 task-line last:border-b-0">
+            <div class="${wrapperClass}">
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <div class="flex flex-col gap-0.5">
+                  <button class="handwriting text-lg text-left hover:underline" onclick="openProject(${
+                    p.id
+                  })">${safeName}</button>
+                  ${pinBadge}
+                </div>
+                <span class="text-[10px] text-slate-500 mono-tag">${
+                  tasks.length
+                } tasks</span>
+              </div>
+              <ul class="pl-1 mt-1">
+                ${
+                  tasksHtml ||
+                  '<li class="py-1 text-[12px] text-slate-400 italic">no tasks yet</li>'
+                }
+                ${
+                  moreCount > 0
+                    ? `<li class="py-0.5 text-[11px] text-slate-500 italic">+${moreCount} more…</li>`
+                    : ""
+                }
+              </ul>
+            </div>
+          </section>
+        `;
+        }
+
+        const pinnedHtml = pinned
+          .map((p) => renderProjectSection(p, true))
+          .join("");
+        const unpinnedHtml = unpinned
+          .map((p) => renderProjectSection(p, false))
+          .join("");
+
+        root.innerHTML = `
+        <section class="space-y-5">
+          <div class="ink-line pb-3 mb-3 flex items-center justify-between gap-2">
+            <h2 class="handwriting text-xl highlight-heading">Page 1 — Index of Projects</h2>
+            <span class="text-[11px] text-slate-500">click a heading to open its page</span>
+          </div>
+          <form onsubmit="addProject(event)" class="space-y-2 mb-3">
+            <label class="block text-[11px] uppercase tracking-wide text-slate-500 mono-tag">new project</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input id="newProjectName" type="text" placeholder="Write a project name here..." class="flex-1 px-3 py-2 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-sky-400" />
+              <button class="px-3 py-2 rounded bg-sky-600 text-white text-xs handwriting" type="submit">+ add</button>
+            </div>
+          </form>
+          <div>
+            ${pinnedHtml}
+            ${unpinnedHtml}
+          </div>
+        </section>
+      `;
+      }
+
+      function renderProjectPage() {
+        const root = document.getElementById("pageRoot");
+        if (!root) return;
+        const p = findProject(currentProjectId);
+        if (!p) {
+          root.innerHTML = `
+          <div class="space-y-3">
+            <div class="ink-line pb-3 mb-3 flex items-center justify-between">
+              <h2 class="handwriting text-xl highlight-heading">Project not found</h2>
+              <button class="text-[11px] text-sky-600 hover:underline" onclick="goToIndex()">← back to index</button>
+            </div>
+            <p class="text-xs text-slate-500">Maybe this page was torn out. Go back to the index and choose another project.</p>
+          </div>
+        `;
+          return;
+        }
+
+        const tasks = p.tasks || [];
+        const tasksHtml = tasks
+          .map((t) => {
+            const isDone = t.status === "done";
+            const doneCls = isDone ? "line-through opacity-60" : "";
+            const tooltip = `Created: ${formatDate(t.createdAt)}${
+              t.deadline ? " | Deadline: " + t.deadline : ""
+            }`;
+            const checkboxInner =
+              t.status === "done" ? "✓" : t.status === "wip" ? "•" : "";
+            let statusClass = "status-todo";
+            if (t.status === "wip") statusClass = "status-wip";
+            if (t.status === "done") statusClass = "status-done";
+
+            const subtasks = Array.isArray(t.subtasks) ? t.subtasks : [];
+            const subtasksHtml = subtasks
+              .map((s) => {
+                const subDoneCls = s.done ? "done" : "";
+                return `
+            <li class="flex items-center gap-2 text-[11px] text-slate-600 dark:text-slate-200">
+              <button
+                type="button"
+                class="w-3.5 h-3.5 rounded-sm border border-slate-400 flex items-center justify-center text-[9px] bg-white/70 dark:bg-slate-900/60"
+                onclick="toggleSubtask(${p.id}, ${t.id}, ${s.id})"
+              >${s.done ? "✓" : ""}</button>
+              <span class="subtask-text ${subDoneCls}">${escapeHtml(
+                  s.text
+                )}</span>
+              <button
+                type="button"
+                class="ml-auto text-[10px] opacity-60 hover:opacity-100"
+                onclick="deleteSubtask(${p.id}, ${t.id}, ${s.id})"
+                title="Delete subtask"
+              >🗑️</button>
+            </li>
+          `;
+              })
+              .join("");
+
+            return `
+          <article class="py-2 task-line group" title="${escapeHtml(tooltip)}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-2 flex-1">
+                <button
+                  class="mt-1 w-4 h-4 rounded-full border border-slate-400 flex items-center justify-center text-[10px] bg-white/80 dark:bg-slate-900/80"
+                  onclick="toggleTaskStatus(${p.id}, ${t.id})"
+                  title="Cycle status (todo → wip → done)"
+                >${checkboxInner}</button>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="handwriting text-[15px] ${doneCls}">
+                      ${escapeHtml(t.headline)}
+                    </span>
+                    <span class="status-chip ${statusClass} mono-tag">${
+              t.status || "todo"
+            }</span>
+                  </div>
+                  ${
+                    t.details
+                      ? `
+                    <p class="mt-1 text-[13px] text-slate-700 dark:text-slate-200 ${doneCls}">
+                      ${escapeHtml(t.details)}
+                    </p>
+                  `
+                      : ""
+                  }
+                  <div class="mt-2 pl-1">
+                    ${
+                      subtasks.length
+                        ? `<ul class="space-y-1 mb-1">${subtasksHtml}</ul>`
+                        : ""
+                    }
+                    <form class="flex items-center gap-1 mt-1" onsubmit="addSubtask(${
+                      p.id
+                    }, ${t.id}, event)">
+                      <input
+                        id="subtaskInput-${p.id}-${t.id}"
+                        type="text"
+                        placeholder="subtask..."
+                        class="flex-1 px-2 py-1 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-sky-400 text-[11px]"
+                      />
+                      <button type="submit" class="px-2 py-1 rounded bg-sky-500 text-white text-[10px]">+ sub</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col items-end gap-1 opacity-70 text-[10px]">
+                <span class="mono-tag">${t.status || "todo"}</span>
+                <button
+                  class="hover:text-red-500"
+                  onclick="deleteTask(${p.id}, ${t.id})"
+                  title="Delete task"
+                >🗑️</button>
+              </div>
+            </div>
+          </article>
+        `;
+          })
+          .join("");
+
+        const emptyMsg = tasks.length
+          ? '<p class="text-xs text-slate-500 italic">no tasks written on this page yet</p>'
+          : '<p class="text-xs text-slate-500 italic">no tasks written on this page yet</p>';
+
+        const pinLabel = p.pinned ? "Unpin" : "Pin";
+
+        root.innerHTML = `
+        <section class="space-y-4">
+          <div class="ink-line pb-3 mb-3 flex items-center justify-between">
+            <div>
+              <button class="text-[11px] text-sky-600 hover:underline mb-1" onclick="goToIndex()">← back to index</button>
+              <div class="flex items-center gap-2">
+                <h2 class="handwriting text-2xl leading-tight highlight-heading">${escapeHtml(
+                  p.name
+                )}</h2>
+                <button
+                  type="button"
+                  onclick="togglePin(${p.id})"
+                  class="px-2 py-1 rounded-full text-[10px] flex items-center gap-1 border border-amber-500 bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-500/20 dark:text-amber-200 dark:border-amber-300"
+                >
+                  ${
+                    p.pinned ? "📌" : "📍"
+                  } <span class="mono-tag uppercase tracking-wide">${pinLabel}</span>
+                </button>
+              </div>
+            </div>
+            <div class="text-right text-[11px] text-slate-500">
+              <div class="mono-tag">created: ${formatDate(p.createdAt)}</div>
+              <div class="mono-tag">updated: ${
+                p.updatedAt ? formatDate(p.updatedAt) : "–"
+              }</div>
+            </div>
+          </div>
+
+          <form onsubmit="addTaskFromForm(${
+            p.id
+          }, event)" class="space-y-2 mb-4">
+            <label class="block text-[11px] uppercase tracking-wide text-slate-500 mono-tag">new task on this page</label>
+            <input
+              id="taskHeadline-${p.id}"
+              type="text"
+              placeholder="Task headline..."
+              class="w-full px-3 py-2 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-emerald-400"
+            />
+            <textarea
+              id="taskDetails-${p.id}"
+              rows="3"
+              placeholder="Details, notes, scribbles..."
+              class="w-full px-3 py-2 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-emerald-400 text-[13px]"
+            ></textarea>
+            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+              <label class="flex items-center gap-2">
+                <span class="mono-tag">deadline</span>
+                <input
+                  id="taskDeadline-${p.id}"
+                  type="date"
+                  class="px-2 py-1 rounded border border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                />
+              </label>
+              <button type="submit" class="px-3 py-1.5 rounded bg-emerald-600 text-white handwriting text-xs">+ add task</button>
+            </div>
+          </form>
+
+          <div>
+            ${tasks.length ? tasksHtml : emptyMsg}
+          </div>
+        </section>
+      `;
+      }
+
+      function renderApp() {
+        if (currentView === "index") {
+          renderIndexPage();
+        } else {
+          renderProjectPage();
+        }
+        updateHeaderMeta();
+      }
+
+      // initial load
+      (async () => {
+        db = await loadDB();
+        loadDarkMode();
+        renderApp();
+      })();
+    </script>
+  </body>
+</html>
