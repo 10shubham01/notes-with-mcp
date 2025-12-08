@@ -254,6 +254,134 @@ class MCPServer {
           },
           required: ['projectId', 'taskId', 'subtaskId']
         }
+      },
+      {
+        name: 'bulk_add_tasks',
+        description: 'Add multiple tasks to a project at once',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            projectId: {
+              type: 'number',
+              description: 'The project ID'
+            },
+            tasks: {
+              type: 'array',
+              description: 'Array of tasks to add',
+              items: {
+                type: 'object',
+                properties: {
+                  headline: {
+                    type: 'string',
+                    description: 'The task headline'
+                  },
+                  details: {
+                    type: 'string',
+                    description: 'Additional details for the task'
+                  },
+                  deadline: {
+                    type: 'string',
+                    description: 'Deadline for the task'
+                  }
+                },
+                required: ['headline']
+              }
+            }
+          },
+          required: ['projectId', 'tasks']
+        }
+      },
+      {
+        name: 'bulk_update_tasks',
+        description: 'Update multiple tasks in a project at once',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            projectId: {
+              type: 'number',
+              description: 'The project ID'
+            },
+            tasks: {
+              type: 'array',
+              description: 'Array of tasks to update',
+              items: {
+                type: 'object',
+                properties: {
+                  taskId: {
+                    type: 'number',
+                    description: 'The task ID to update'
+                  },
+                  headline: {
+                    type: 'string',
+                    description: 'The task headline'
+                  },
+                  details: {
+                    type: 'string',
+                    description: 'Additional details for the task'
+                  },
+                  status: {
+                    type: 'string',
+                    description: 'Task status (todo, in-progress, done)',
+                    enum: ['todo', 'in-progress', 'done']
+                  },
+                  deadline: {
+                    type: 'string',
+                    description: 'Deadline for the task'
+                  }
+                },
+                required: ['taskId']
+              }
+            }
+          },
+          required: ['projectId', 'tasks']
+        }
+      },
+      {
+        name: 'bulk_delete_tasks',
+        description: 'Delete multiple tasks from a project at once',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            projectId: {
+              type: 'number',
+              description: 'The project ID'
+            },
+            taskIds: {
+              type: 'array',
+              description: 'Array of task IDs to delete',
+              items: {
+                type: 'number'
+              }
+            }
+          },
+          required: ['projectId', 'taskIds']
+        }
+      },
+      {
+        name: 'bulk_update_task_status',
+        description: 'Update the status of multiple tasks at once',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            projectId: {
+              type: 'number',
+              description: 'The project ID'
+            },
+            taskIds: {
+              type: 'array',
+              description: 'Array of task IDs to update',
+              items: {
+                type: 'number'
+              }
+            },
+            status: {
+              type: 'string',
+              description: 'New status for all tasks',
+              enum: ['todo', 'in-progress', 'done']
+            }
+          },
+          required: ['projectId', 'taskIds', 'status']
+        }
       }
     ];
   }
@@ -640,6 +768,178 @@ class MCPServer {
         };
       }
 
+      case 'bulk_add_tasks': {
+        const project = db.projects.find(p => p.id == args.projectId);
+        if (!project) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Project not found'
+              }
+            ],
+            isError: true
+          };
+        }
+        const addedTasks = [];
+        const ts = Date.now();
+        
+        for (let i = 0; i < args.tasks.length; i++) {
+          const taskData = args.tasks[i];
+          const task = {
+            id: ts + i,
+            headline: taskData.headline,
+            details: taskData.details || '',
+            status: 'todo',
+            deadline: taskData.deadline || '',
+            subtasks: [],
+            createdAt: ts + i,
+            updatedAt: ts + i
+          };
+          project.tasks.push(task);
+          addedTasks.push(task);
+        }
+        
+        project.updatedAt = Date.now();
+        await writeDB(db);
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Successfully added ${addedTasks.length} tasks:\n${JSON.stringify(addedTasks, null, 2)}`
+            }
+          ]
+        };
+      }
+
+      case 'bulk_update_tasks': {
+        const project = db.projects.find(p => p.id == args.projectId);
+        if (!project) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Project not found'
+              }
+            ],
+            isError: true
+          };
+        }
+        const updatedTasks = [];
+        const notFound = [];
+        
+        for (const taskUpdate of args.tasks) {
+          const task = project.tasks.find(t => t.id == taskUpdate.taskId);
+          if (!task) {
+            notFound.push(taskUpdate.taskId);
+            continue;
+          }
+          
+          if (taskUpdate.headline) task.headline = taskUpdate.headline;
+          if (taskUpdate.details !== undefined) task.details = taskUpdate.details;
+          if (taskUpdate.status) task.status = taskUpdate.status;
+          if (taskUpdate.deadline !== undefined) task.deadline = taskUpdate.deadline;
+          task.updatedAt = Date.now();
+          updatedTasks.push(task);
+        }
+        
+        project.updatedAt = Date.now();
+        await writeDB(db);
+        
+        let message = `Successfully updated ${updatedTasks.length} tasks`;
+        if (notFound.length > 0) {
+          message += `\nTasks not found: ${notFound.join(', ')}`;
+        }
+        message += `:\n${JSON.stringify(updatedTasks, null, 2)}`;
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: message
+            }
+          ]
+        };
+      }
+
+      case 'bulk_delete_tasks': {
+        const project = db.projects.find(p => p.id == args.projectId);
+        if (!project) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Project not found'
+              }
+            ],
+            isError: true
+          };
+        }
+        
+        const deletedCount = project.tasks.length;
+        project.tasks = project.tasks.filter(t => !args.taskIds.includes(t.id));
+        const actualDeletedCount = deletedCount - project.tasks.length;
+        
+        project.updatedAt = Date.now();
+        await writeDB(db);
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Successfully deleted ${actualDeletedCount} tasks out of ${args.taskIds.length} requested`
+            }
+          ]
+        };
+      }
+
+      case 'bulk_update_task_status': {
+        const project = db.projects.find(p => p.id == args.projectId);
+        if (!project) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Project not found'
+              }
+            ],
+            isError: true
+          };
+        }
+        
+        const updatedTasks = [];
+        const notFound = [];
+        
+        for (const taskId of args.taskIds) {
+          const task = project.tasks.find(t => t.id == taskId);
+          if (!task) {
+            notFound.push(taskId);
+            continue;
+          }
+          
+          task.status = args.status;
+          task.updatedAt = Date.now();
+          updatedTasks.push(task);
+        }
+        
+        project.updatedAt = Date.now();
+        await writeDB(db);
+        
+        let message = `Successfully updated status of ${updatedTasks.length} tasks to '${args.status}'`;
+        if (notFound.length > 0) {
+          message += `\nTasks not found: ${notFound.join(', ')}`;
+        }
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: message
+            }
+          ]
+        };
+      }
+
       default:
         return {
           content: [
@@ -684,6 +984,8 @@ class MCPServer {
         };
 
       case "tools/call": {
+        console.log(`[${new Date().toISOString()}] Tool called: ${params.name}`);
+        console.log(`[${new Date().toISOString()}] Arguments:`, JSON.stringify(params.arguments, null, 2));
         const result = await this.handleToolCall(params.name, params.arguments || {});
         return {
           id,
@@ -715,55 +1017,61 @@ class MCPServer {
 }
 
 async start() {
-  const readline = require("readline");
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: false
-  });
+    const http = require('http');
+    const PORT = process.env.PORT || 6969;
 
-  rl.on("line", async (line) => {
-    let request;
+    const server = http.createServer(async (req, res) => {
+      // Enable CORS
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+      res.setHeader('Content-Type', 'application/json');
 
-    try {
-      request = JSON.parse(line);
-    } catch (e) {
-      console.error(JSON.stringify({
-        jsonrpc: "2.0",
-        error: { code: -32700, message: "Invalid JSON" }
-      }));
-      return;
-    }
+      // Handle preflight requests
+      if (req.method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+        return;
+      }
 
-    const response = await this.handleRequest(request);
+      // Only accept POST requests
+      if (req.method !== 'POST') {
+        res.writeHead(405);
+        res.end(JSON.stringify({
+          jsonrpc: '2.0',
+          error: { code: -32600, message: 'Method not allowed. Use POST.' }
+        }));
+        return;
+      }
 
-    // stdout MUST contain ONLY valid JSON-RPC responses
-    console.log(JSON.stringify(response));
-  });
-}
+      let body = '';
+      req.on('data', chunk => {
+        body += chunk.toString();
+      });
 
+      req.on('end', async () => {
+        let request;
 
-  async start() {
-    const readline = require('readline');
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-      terminal: false
+        try {
+          request = JSON.parse(body);
+        } catch (e) {
+          res.writeHead(400);
+          res.end(JSON.stringify({
+            jsonrpc: '2.0',
+            error: { code: -32700, message: 'Invalid JSON' }
+          }));
+          return;
+        }
+
+        const response = await this.handleRequest(request);
+        res.writeHead(200);
+        res.end(JSON.stringify(response));
+      });
     });
 
-    rl.on('line', async (line) => {
-      try {
-        const request = JSON.parse(line);
-        const response = await this.handleRequest(request);
-        console.log(JSON.stringify(response));
-      } catch (error) {
-        console.error(JSON.stringify({
-          error: {
-            code: -32603,
-            message: error.message
-          }
-        }));
-      }
+    server.listen(PORT, () => {
+      console.log(`MCP Server running on http://localhost:${PORT}`);
+      console.log(`Send JSON-RPC requests via POST to interact with the server`);
     });
   }
 }

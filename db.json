@@ -1,86 +1,114 @@
 {
   "projects": [
     {
-      "id": 1,
+      "id": 1765190968784,
       "name": "OTS",
+      "createdAt": 1765190968784,
+      "updatedAt": 1765192743256,
       "pinned": false,
-      "createdAt": "2025-12-07T20:15:49.947Z",
       "tasks": [
         {
-          "id": 1,
+          "id": 1765191025083,
           "headline": "Make the detailed form page for reactor creation",
-          "details": "",
-          "status": "todo",
-          "deadline": null,
-          "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z"
-        },
-        {
-          "id": 2,
-          "headline": "Make all the options in the front of the users; nothing should be hidden",
-          "details": "",
-          "status": "todo",
-          "deadline": null,
-          "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z"
-        },
-        {
-          "id": 3,
-          "headline": "Make the camera/IP nomenclature ready for testing",
-          "details": "",
-          "status": "todo",
-          "deadline": "2025-12-12",
-          "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z"
-        },
-        {
-          "id": 4,
-          "headline": "Integrate all the models with the dashboard and install the dashboard for test",
-          "details": "",
-          "status": "todo",
-          "deadline": "2025-12-14",
-          "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z"
-        },
-        {
-          "id": 5,
-          "headline": "Make visible difference for the front and back side of the reactors",
-          "details": "",
+          "details": "Create a detailed form page for reactor creation in the OT software (fields, validation, layout).",
           "status": "done",
-          "deadline": null,
+          "deadline": "",
           "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z",
-          "done": true,
-          "updatedAt": 1765138619988
+          "createdAt": 1765191025083,
+          "updatedAt": 1765191240067
         },
         {
-          "id": 6,
-          "headline": "Add progress indicator list view on the survey screens",
-          "details": "",
+          "id": 1765191025084,
+          "headline": "Make all options visible to users; nothing hidden",
+          "details": "Ensure all configuration options are available in the front-end for users; no options should be hidden.",
           "status": "todo",
-          "deadline": null,
+          "deadline": "",
           "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z"
+          "createdAt": 1765191025084,
+          "updatedAt": 1765191025084
         },
         {
-          "id": 7,
+          "id": 1765191025085,
+          "headline": "Make camera/IP nomenclature ready for testing",
+          "details": "Standardize camera and IP naming conventions and prepare for testing.",
+          "status": "todo",
+          "deadline": "12/12/25",
+          "subtasks": [],
+          "createdAt": 1765191025085,
+          "updatedAt": 1765191025085
+        },
+        {
+          "id": 1765191025086,
+          "headline": "Integrate all modules with the dashboard and install dashboard for test",
+          "details": "Integrate modules with dashboard and deploy a test dashboard instance.",
+          "status": "todo",
+          "deadline": "14/12/25",
+          "subtasks": [],
+          "createdAt": 1765191025086,
+          "updatedAt": 1765191025086
+        },
+        {
+          "id": 1765191025087,
+          "headline": "Make visible difference for front and back side of reactors",
+          "details": "Add UI indicators or visuals to clearly show front vs back sides of reactors.",
+          "status": "done",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765191025087,
+          "updatedAt": 1765191240067
+        },
+        {
+          "id": 1765191025088,
+          "headline": "Add progress indicator list view on the surveying screen",
+          "details": "Implement a progress indicator list view on the surveying screen to show task progress.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765191025088,
+          "updatedAt": 1765191025088
+        },
+        {
+          "id": 1765191025089,
           "headline": "Confirm the camera mount with the controller",
-          "details": "",
+          "details": "Verify and confirm the physical camera mount alignment and interaction with the controller.",
           "status": "todo",
-          "deadline": "2025-12-12",
+          "deadline": "12/12/25",
           "subtasks": [],
-          "createdAt": "2025-12-07T20:15:49.947Z"
+          "createdAt": 1765191025089,
+          "updatedAt": 1765191025089
+        },
+        {
+          "id": 1765192558831,
+          "headline": "API integration",
+          "details": "Integrate required APIs into the OTS software and test all endpoints.",
+          "status": "todo",
+          "done": false,
+          "createdAt": 1765192558831,
+          "updatedAt": 1765192558831,
+          "deadline": "",
+          "subtasks": []
         }
-      ],
-      "updatedAt": 1765138619988
+      ]
     },
     {
-      "id": 1765139621075,
-      "name": "My Project",
-      "createdAt": 1765139621075,
-      "updatedAt": 1765139621075,
-      "pinned": false,
-      "tasks": []
+      "id": 1765194750076,
+      "name": "Novio Score",
+      "createdAt": 1765194750076,
+      "updatedAt": 1765195246812,
+      "pinned": true,
+      "tasks": [
+        {
+          "id": 1765194777400,
+          "headline": "Take care of DPD calendar",
+          "details": "Manage and update the DPD calendar for Novio Score project.",
+          "status": "todo",
+          "done": false,
+          "createdAt": 1765194777400,
+          "updatedAt": 1765194777400,
+          "deadline": "",
+          "subtasks": []
+        }
+      ]
     }
   ]
 }
