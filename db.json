@@ -1,3 +1,86 @@
 {
-  "projects": []
+  "projects": [
+    {
+      "id": 1,
+      "name": "OTS",
+      "pinned": false,
+      "createdAt": "2025-12-07T20:15:49.947Z",
+      "tasks": [
+        {
+          "id": 1,
+          "headline": "Make the detailed form page for reactor creation",
+          "details": "",
+          "status": "todo",
+          "deadline": null,
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z"
+        },
+        {
+          "id": 2,
+          "headline": "Make all the options in the front of the users; nothing should be hidden",
+          "details": "",
+          "status": "todo",
+          "deadline": null,
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z"
+        },
+        {
+          "id": 3,
+          "headline": "Make the camera/IP nomenclature ready for testing",
+          "details": "",
+          "status": "todo",
+          "deadline": "2025-12-12",
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z"
+        },
+        {
+          "id": 4,
+          "headline": "Integrate all the models with the dashboard and install the dashboard for test",
+          "details": "",
+          "status": "todo",
+          "deadline": "2025-12-14",
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z"
+        },
+        {
+          "id": 5,
+          "headline": "Make visible difference for the front and back side of the reactors",
+          "details": "",
+          "status": "done",
+          "deadline": null,
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z",
+          "done": true,
+          "updatedAt": 1765138619988
+        },
+        {
+          "id": 6,
+          "headline": "Add progress indicator list view on the survey screens",
+          "details": "",
+          "status": "todo",
+          "deadline": null,
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z"
+        },
+        {
+          "id": 7,
+          "headline": "Confirm the camera mount with the controller",
+          "details": "",
+          "status": "todo",
+          "deadline": "2025-12-12",
+          "subtasks": [],
+          "createdAt": "2025-12-07T20:15:49.947Z"
+        }
+      ],
+      "updatedAt": 1765138619988
+    },
+    {
+      "id": 1765139621075,
+      "name": "My Project",
+      "createdAt": 1765139621075,
+      "updatedAt": 1765139621075,
+      "pinned": false,
+      "tasks": []
+    }
+  ]
 }
