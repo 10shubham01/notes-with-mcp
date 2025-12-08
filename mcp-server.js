@@ -653,34 +653,95 @@ class MCPServer {
     }
   }
 
-  async handleRequest(request) {
-    const { method, params } = request;
+ async handleRequest(request) {
+  const { id, method, params } = request;
 
+  try {
     switch (method) {
-      case 'initialize':
+      case "initialize":
         return {
-          protocolVersion: '2024-11-05',
-          capabilities: {
-            tools: {}
-          },
-          serverInfo: {
-            name: 'notebook-mcp-server',
-            version: '1.0.0'
+          id,
+          jsonrpc: "2.0",
+          result: {
+            protocolVersion: "2024-11-05",
+            capabilities: {
+              tools: {}
+            },
+            serverInfo: {
+              name: "notebook-mcp-server",
+              version: "1.0.0"
+            }
           }
         };
 
-      case 'tools/list':
+      case "tools/list":
         return {
-          tools: this.tools
+          id,
+          jsonrpc: "2.0",
+          result: {
+            tools: this.tools
+          }
         };
 
-      case 'tools/call':
-        return await this.handleToolCall(params.name, params.arguments || {});
+      case "tools/call": {
+        const result = await this.handleToolCall(params.name, params.arguments || {});
+        return {
+          id,
+          jsonrpc: "2.0",
+          result
+        };
+      }
 
       default:
-        throw new Error(`Unknown method: ${method}`);
+        return {
+          id,
+          jsonrpc: "2.0",
+          error: {
+            code: -32601,
+            message: `Unknown method: ${method}`
+          }
+        };
     }
+  } catch (err) {
+    return {
+      id,
+      jsonrpc: "2.0",
+      error: {
+        code: -32603,
+        message: err.message
+      }
+    };
   }
+}
+
+async start() {
+  const readline = require("readline");
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false
+  });
+
+  rl.on("line", async (line) => {
+    let request;
+
+    try {
+      request = JSON.parse(line);
+    } catch (e) {
+      console.error(JSON.stringify({
+        jsonrpc: "2.0",
+        error: { code: -32700, message: "Invalid JSON" }
+      }));
+      return;
+    }
+
+    const response = await this.handleRequest(request);
+
+    // stdout MUST contain ONLY valid JSON-RPC responses
+    console.log(JSON.stringify(response));
+  });
+}
+
 
   async start() {
     const readline = require('readline');
