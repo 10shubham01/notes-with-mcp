@@ -4,7 +4,7 @@
       "id": 1765190968784,
       "name": "OTS",
       "createdAt": 1765190968784,
-      "updatedAt": 1765192743256,
+      "updatedAt": 1765264774350,
       "pinned": false,
       "tasks": [
         {
@@ -87,6 +87,36 @@
           "updatedAt": 1765192558831,
           "deadline": "",
           "subtasks": []
+        },
+        {
+          "id": 1765264774350,
+          "headline": "Top-corner label mismatch: shows ‘Reactor’ when Equipment Type = Heat Exchanger",
+          "details": "When Equipment Type is set to 'Heat Exchanger', the top-right corner label still shows 'Reactor'. Investigate the UI/mapper that renders the top-corner label, fix mapping or fallback, and add unit tests. Reproduce steps, root cause, and fix.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765264774350,
+          "updatedAt": 1765264774350
+        },
+        {
+          "id": 1765264774351,
+          "headline": "Spelling correction: 'Acrylic' misspelled",
+          "details": "Fix the spelling of 'Acrylic' across UI forms, dropdowns, templates and exported reports. Search for common misspellings and correct them. Verify translations/localizations if any.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765264774351,
+          "updatedAt": 1765264774351
+        },
+        {
+          "id": 1765264774352,
+          "headline": "Remove duplicate 'Equipment name' field (same as Equipment Type)",
+          "details": "Remove the 'Equipment name' field from forms and UI where it duplicates 'Equipment Type'. Update backend validation and API contracts if necessary; migrate existing data or provide mapping/cleanup script if required. Coordinate with backend team before deletion.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765264774352,
+          "updatedAt": 1765264774352
         }
       ]
     },
@@ -94,7 +124,7 @@
       "id": 1765194750076,
       "name": "Novio Score",
       "createdAt": 1765194750076,
-      "updatedAt": 1765195246812,
+      "updatedAt": 1765195793104,
       "pinned": true,
       "tasks": [
         {
@@ -107,6 +137,138 @@
           "updatedAt": 1765194777400,
           "deadline": "",
           "subtasks": []
+        },
+        {
+          "id": 1765195788612,
+          "headline": "Check theme color of Airpay",
+          "details": "Review and verify the theme color usage in Airpay UI.",
+          "status": "todo",
+          "done": false,
+          "createdAt": 1765195788612,
+          "updatedAt": 1765195788612,
+          "deadline": "",
+          "subtasks": []
+        },
+        {
+          "id": 1765195793104,
+          "headline": "Check theme color of Airpay",
+          "details": "Review and verify the theme color usage in Airpay UI.",
+          "status": "todo",
+          "done": false,
+          "createdAt": 1765195793104,
+          "updatedAt": 1765195793104,
+          "deadline": "",
+          "subtasks": []
+        }
+      ]
+    },
+    {
+      "id": 1765284950323,
+      "name": "novio-score-video-checklist",
+      "createdAt": 1765284950323,
+      "updatedAt": 1765285160351,
+      "pinned": false,
+      "tasks": [
+        {
+          "id": 1765284976163,
+          "headline": "Set production ENV for Remotion (AWS keys & region)",
+          "details": "Add Remotion AWS access key, Remotion AWS secret key, and Remotion AWS region to production environment.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976163,
+          "updatedAt": 1765285160351,
+          "done": false
+        },
+        {
+          "id": 1765284976164,
+          "headline": "Deploy Lambda function with 540s timeout",
+          "details": "Deploy the video-processing Lambda function and set timeout to 540 seconds.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976164,
+          "updatedAt": 1765284976164
+        },
+        {
+          "id": 1765284976165,
+          "headline": "Deploy sites named 'novio-score' (video)",
+          "details": "Deploy the static site(s) with the name 'novio-score' for serving video UI/content.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976165,
+          "updatedAt": 1765284976165
+        },
+        {
+          "id": 1765284976166,
+          "headline": "Write prod.yml GitHub Action",
+          "details": "Create production GitHub Actions workflow (prod.yml) to build and deploy video pipeline.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976166,
+          "updatedAt": 1765284976166
+        },
+        {
+          "id": 1765284976167,
+          "headline": "Cross-check all static videos in S3 bucket",
+          "details": "Verify all static video files are present, correctly named, and accessible in the S3 bucket.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976167,
+          "updatedAt": 1765284976167
+        },
+        {
+          "id": 1765284976168,
+          "headline": "Handle CSP errors for CDN",
+          "details": "Implement Content-Security-Policy error handling and headers for CDN distribution.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976168,
+          "updatedAt": 1765284976168
+        },
+        {
+          "id": 1765284976169,
+          "headline": "Create S3 bucket for videos",
+          "details": "Create and configure a dedicated S3 bucket for storing video assets.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976169,
+          "updatedAt": 1765284976169
+        },
+        {
+          "id": 1765284976170,
+          "headline": "Map CloudFront to S3 video bucket",
+          "details": "Configure CloudFront distribution to use the S3 video bucket as origin and set caching/headers.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976170,
+          "updatedAt": 1765284976170
+        },
+        {
+          "id": 1765284976171,
+          "headline": "Finalize sheet and lock",
+          "details": "Finalize the checklist/spreadsheet and lock it for editing (final version).",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976171,
+          "updatedAt": 1765284976171
+        },
+        {
+          "id": 1765284976172,
+          "headline": "TTS setup",
+          "details": "Set up Text-to-Speech (TTS) service/integration for video audio generation.",
+          "status": "todo",
+          "deadline": "",
+          "subtasks": [],
+          "createdAt": 1765284976172,
+          "updatedAt": 1765284976172
         }
       ]
     }
