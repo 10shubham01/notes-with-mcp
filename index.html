@@ -515,6 +515,43 @@
       }
 
       // subtasks
+      function showSubtaskForm(projectId, taskId) {
+        const containerId = `subtaskFormContainer-${projectId}-${taskId}`;
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = `
+          <form class="flex items-center gap-1 mt-1" onsubmit="addSubtask(${projectId}, ${taskId}, event)">
+            <input
+              id="subtaskInput-${projectId}-${taskId}"
+              type="text"
+              placeholder="subtask..."
+              class="flex-1 px-2 py-1 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-sky-400 text-[11px]"
+              autofocus
+            />
+            <button type="submit" class="px-2 py-1 rounded bg-sky-500 text-white text-[10px]">add</button>
+            <button type="button" onclick="hideSubtaskForm(${projectId}, ${taskId})" class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[10px]">cancel</button>
+          </form>
+        `;
+      }
+
+      function hideSubtaskForm(projectId, taskId) {
+        const containerId = `subtaskFormContainer-${projectId}-${taskId}`;
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = `
+          <button
+            type="button"
+            onclick="showSubtaskForm(${projectId}, ${taskId})"
+            class="px-2 py-1 rounded text-[10px] text-sky-600 hover:text-sky-700 hover:bg-sky-50 dark:hover:bg-sky-900/20 flex items-center gap-1"
+          >
+            <span>+</span>
+            <span>add subtask</span>
+          </button>
+        `;
+      }
+
       async function addSubtask(projectId, taskId, ev) {
         if (ev) ev.preventDefault();
         const inputId = `subtaskInput-${projectId}-${taskId}`;
@@ -542,6 +579,7 @@
             }
           }
           input.value = "";
+          hideSubtaskForm(projectId, taskId);
           renderApp();
         } catch (e) {
           console.error("Error adding subtask:", e);
@@ -889,17 +927,16 @@
                         ? `<ul class="space-y-1 mb-1">${subtasksHtml}</ul>`
                         : ""
                     }
-                    <form class="flex items-center gap-1 mt-1" onsubmit="addSubtask(${
-                      p.id
-                    }, ${t.id}, event)">
-                      <input
-                        id="subtaskInput-${p.id}-${t.id}"
-                        type="text"
-                        placeholder="subtask..."
-                        class="flex-1 px-2 py-1 rounded border border-dashed border-slate-300 bg-transparent focus:outline-none focus:ring-1 focus:ring-sky-400 text-[11px]"
-                      />
-                      <button type="submit" class="px-2 py-1 rounded bg-sky-500 text-white text-[10px]">+ sub</button>
-                    </form>
+                    <div id="subtaskFormContainer-${p.id}-${t.id}">
+                      <button
+                        type="button"
+                        onclick="showSubtaskForm(${p.id}, ${t.id})"
+                        class="px-2 py-1 rounded text-[10px] text-sky-600 hover:text-sky-700 hover:bg-sky-50 dark:hover:bg-sky-900/20 flex items-center gap-1"
+                      >
+                        <span>+</span>
+                        <span>add subtask</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -124,8 +124,8 @@
       "id": 1765194750076,
       "name": "Novio Score",
       "createdAt": 1765194750076,
-      "updatedAt": 1765195793104,
-      "pinned": true,
+      "updatedAt": 1765285984958,
+      "pinned": false,
       "tasks": [
         {
           "id": 1765194777400,
@@ -134,7 +134,7 @@
           "status": "todo",
           "done": false,
           "createdAt": 1765194777400,
-          "updatedAt": 1765194777400,
+          "updatedAt": 1765285970233,
           "deadline": "",
           "subtasks": []
         },
