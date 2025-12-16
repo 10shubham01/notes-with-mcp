@@ -166,59 +166,59 @@
       "id": 1765284950323,
       "name": "novio-score-video-checklist",
       "createdAt": 1765284950323,
-      "updatedAt": 1765285160351,
+      "updatedAt": 1765459546958,
       "pinned": false,
       "tasks": [
         {
           "id": 1765284976163,
           "headline": "Set production ENV for Remotion (AWS keys & region)",
           "details": "Add Remotion AWS access key, Remotion AWS secret key, and Remotion AWS region to production environment.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976163,
-          "updatedAt": 1765285160351,
+          "updatedAt": 1765459546958,
           "done": false
         },
         {
           "id": 1765284976164,
           "headline": "Deploy Lambda function with 540s timeout",
           "details": "Deploy the video-processing Lambda function and set timeout to 540 seconds.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976164,
-          "updatedAt": 1765284976164
+          "updatedAt": 1765459546958
         },
         {
           "id": 1765284976165,
           "headline": "Deploy sites named 'novio-score' (video)",
           "details": "Deploy the static site(s) with the name 'novio-score' for serving video UI/content.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976165,
-          "updatedAt": 1765284976165
+          "updatedAt": 1765459546958
         },
         {
           "id": 1765284976166,
           "headline": "Write prod.yml GitHub Action",
           "details": "Create production GitHub Actions workflow (prod.yml) to build and deploy video pipeline.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976166,
-          "updatedAt": 1765284976166
+          "updatedAt": 1765459546958
         },
         {
           "id": 1765284976167,
           "headline": "Cross-check all static videos in S3 bucket",
           "details": "Verify all static video files are present, correctly named, and accessible in the S3 bucket.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976167,
-          "updatedAt": 1765284976167
+          "updatedAt": 1765459546958
         },
         {
           "id": 1765284976168,
@@ -234,21 +234,21 @@
           "id": 1765284976169,
           "headline": "Create S3 bucket for videos",
           "details": "Create and configure a dedicated S3 bucket for storing video assets.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976169,
-          "updatedAt": 1765284976169
+          "updatedAt": 1765459546958
         },
         {
           "id": 1765284976170,
           "headline": "Map CloudFront to S3 video bucket",
           "details": "Configure CloudFront distribution to use the S3 video bucket as origin and set caching/headers.",
-          "status": "todo",
+          "status": "done",
           "deadline": "",
           "subtasks": [],
           "createdAt": 1765284976170,
-          "updatedAt": 1765284976170
+          "updatedAt": 1765459546958
         },
         {
           "id": 1765284976171,
